@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { HomeIcon, BookOpenIcon, PlusCircleIcon, SearchIcon } from '@heroicons/react/outline';
 
 // Placeholder components
@@ -67,12 +67,12 @@ const App = () => {
         </nav>
 
         <main className="py-10">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/recipes" component={RecipeList} />
-            <Route path="/submit" component={RecipeSubmission} />
-            <Route path="/search" component={Search} />
-          </Switch>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/recipes" element={<RecipeList />} />
+            <Route path="/submit" element={<RecipeSubmission />} />
+            <Route path="/search" element={<Search />} />
+          </Routes>
         </main>
 
         <footer className="bg-white border-t border-gray-200 py-4">
