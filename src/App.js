@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { HomeIcon, BookOpenIcon, PlusCircleIcon, SearchIcon } from '@heroicons/react/outline';
+import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 // Placeholder components
 const Home = () => (
@@ -57,7 +57,7 @@ const App = () => {
                     Submit Recipe
                   </Link>
                   <Link to="/search" className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">
-                    <SearchIcon className="h-5 w-5 mr-1" />
+                    <MagnifyingGlassIcon className="h-5 w-5 mr-1" />
                     Search
                   </Link>
                 </div>
