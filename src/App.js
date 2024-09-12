@@ -34,7 +34,7 @@ const Search = () => (
 const App = () => {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen flex flex-col bg-gray-100">
         <nav className="bg-white shadow-md">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex justify-between h-16">
@@ -66,7 +66,8 @@ const App = () => {
           </div>
         </nav>
 
-        <main className="py-10">
+        {/* Main content area - flex-1 to take remaining space */}
+        <main className="flex-1 py-10">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/recipes" element={<RecipeList />} />
@@ -75,6 +76,7 @@ const App = () => {
           </Routes>
         </main>
 
+        {/* Footer stays at the bottom */}
         <footer className="bg-white border-t border-gray-200 py-4">
           <div className="max-w-7xl mx-auto px-4 text-center text-gray-500">
             <p>&copy; 2024 Open Recipe Sharing Platform</p>
