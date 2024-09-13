@@ -72,7 +72,7 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-blue-100 p-6 rounded-lg">
             <h3 className="text-xl font-semibold mb-2">Browse Recipes</h3>
-            <p className="mb-4">Explore our collection of delicious recipes from various cuisines.</p>
+            <p className="mb-4">Explore our collection of delicious recipes from various Indian household.</p>
             <Link to="/recipes" className="text-blue-500 hover:underline">
               View All Recipes
             </Link>
