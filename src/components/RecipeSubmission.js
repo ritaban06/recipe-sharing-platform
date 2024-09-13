@@ -29,7 +29,6 @@ const RecipeSubmission = () => {
     if (!recipe.title.trim()) tempErrors.title = "Title is required";
     if (!recipe.ingredients.trim()) tempErrors.ingredients = "Ingredients are required";
     if (!recipe.instructions.trim()) tempErrors.instructions = "Instructions are required";
-    if (!recipe.image) tempErrors.image = "Image is required";
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -42,7 +41,9 @@ const RecipeSubmission = () => {
         formData.append('title', recipe.title);
         formData.append('ingredients', recipe.ingredients);
         formData.append('instructions', recipe.instructions);
-        formData.append('image', recipe.image);
+        if (recipe.image) {
+          formData.append('image', recipe.image);
+        }
 
         // Replace with your API endpoint
         const response = await fetch('https://api.example.com/recipes', {
@@ -69,36 +70,39 @@ const RecipeSubmission = () => {
       <h2 className="text-2xl font-bold mb-6">Submit a New Recipe</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">Recipe Title</label>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700">Recipe Title*</label>
           <input
             type="text"
             id="title"
             name="title"
             value={recipe.title}
             onChange={handleChange}
+            required
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
           {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
         </div>
         <div>
-          <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700">Ingredients</label>
+          <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700">Ingredients*</label>
           <textarea
             id="ingredients"
             name="ingredients"
             value={recipe.ingredients}
             onChange={handleChange}
+            required
             rows="3"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           ></textarea>
           {errors.ingredients && <p className="text-red-500 text-xs mt-1">{errors.ingredients}</p>}
         </div>
         <div>
-          <label htmlFor="instructions" className="block text-sm font-medium text-gray-700">Instructions</label>
+          <label htmlFor="instructions" className="block text-sm font-medium text-gray-700">Instructions*</label>
           <textarea
             id="instructions"
             name="instructions"
             value={recipe.instructions}
             onChange={handleChange}
+            required
             rows="5"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           ></textarea>
@@ -119,7 +123,6 @@ const RecipeSubmission = () => {
               file:bg-indigo-50 file:text-indigo-700
               hover:file:bg-indigo-100"
           />
-          {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image}</p>}
         </div>
         <div>
           <button
