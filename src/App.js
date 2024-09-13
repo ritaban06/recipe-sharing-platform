@@ -4,6 +4,7 @@ import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon } from '@he
 import RecipeList from './components/RecipeList'; // Added import statement for RecipeList.js
 import RecipeSubmission from './components/RecipeSubmission'; // Added import statement for RecipeSubmission.js
 import Search from './components/Search';  // Added import statement for Search.js
+import Home from './components/Home';  // Added import statement for Home.js
 
 // Placeholder components
 const Home = () => (
