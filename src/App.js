@@ -1,39 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import RecipeList from './components/RecipeList'; // Added import statement for RecipeList.js
-import RecipeSubmission from './components/RecipeSubmission'; // Added import statement for RecipeSubmission.js
-import Search from './components/Search';  // Added import statement for Search.js
-import Home from './components/Home';  // Added import statement for Home.js
-
-// Placeholder components
-// const Home = () => (
-//   <div className="max-w-4xl mx-auto">
-//     <h1 className="text-3xl font-bold mb-4">Welcome to Open Recipe Sharing</h1>
-//     <p className="text-lg">Discover, share, and enjoy delicious recipes from around the world!</p>
-//   </div>
-// );     // Lines 10 to 15 are not needed as import statement (line 7) has done it already
-
-// const RecipeList = () => (
-//   <div className="max-w-4xl mx-auto">
-//     <h2 className="text-2xl font-bold mb-4">Recipe List</h2>
-//     {/* Add recipe list items here */}
-//   </div>
-// );         // Lines 14 to 19 not needed as import statement (line 4) has done it already
-
-// const RecipeSubmission = () => (
-//   <div className="max-w-4xl mx-auto">
-//     <h2 className="text-2xl font-bold mb-4">Submit a Recipe</h2>
-//     {/* Add recipe submission form here */}
-//   </div>
-// );           // Lines 22 to 27 are not needed as import statement (line 5) has done it already
-
-// const Search = () => (
-//   <div className="max-w-4xl mx-auto">
-//     <h2 className="text-2xl font-bold mb-4">Search Recipes</h2>
-//     {/* Add search functionality here */}
-//   </div>
-// );          // Lines 29 to 34 are not needed as import statement (line 6) has done it already
+import RecipeList from './components/RecipeList';
+import RecipeSubmission from './components/RecipeSubmission';
+import Search from './components/Search';
+import Home from './components/Home';
 
 const App = () => {
   return (
@@ -66,6 +37,14 @@ const App = () => {
                   </Link>
                 </div>
               </div>
+              <div className="flex items-center">
+                <Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded mr-2">
+                  Sign Up
+                </Link>
+                <Link to="/login" className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded">
+                  Log In
+                </Link>
+              </div>
             </div>
           </div>
         </nav>
@@ -77,6 +56,9 @@ const App = () => {
             <Route path="/recipes" element={<RecipeList />} />
             <Route path="/submit" element={<RecipeSubmission />} />
             <Route path="/search" element={<Search />} />
+            {/* Add routes for signup and login pages when you create them */}
+            {/* <Route path="/signup" element={<Signup />} /> */}
+            {/* <Route path="/login" element={<Login />} /> */}
           </Routes>
         </main>
 
