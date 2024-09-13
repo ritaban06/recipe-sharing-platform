@@ -5,6 +5,8 @@ import RecipeList from './components/RecipeList';
 import RecipeSubmission from './components/RecipeSubmission';
 import Search from './components/Search';
 import Home from './components/Home';
+import Signup from './components/Signup';
+import Login from './components/Login';
 
 const App = () => {
   return (
@@ -56,9 +58,8 @@ const App = () => {
             <Route path="/recipes" element={<RecipeList />} />
             <Route path="/submit" element={<RecipeSubmission />} />
             <Route path="/search" element={<Search />} />
-            {/* Add routes for signup and login pages when you create them */}
-            {/* <Route path="/signup" element={<Signup />} /> */}
-            {/* <Route path="/login" element={<Login />} /> */}
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </main>
 
