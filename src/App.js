@@ -7,12 +7,12 @@ import Search from './components/Search';  // Added import statement for Search.
 import Home from './components/Home';  // Added import statement for Home.js
 
 // Placeholder components
-const Home = () => (
-  <div className="max-w-4xl mx-auto">
-    <h1 className="text-3xl font-bold mb-4">Welcome to Open Recipe Sharing</h1>
-    <p className="text-lg">Discover, share, and enjoy delicious recipes from around the world!</p>
-  </div>
-);
+// const Home = () => (
+//   <div className="max-w-4xl mx-auto">
+//     <h1 className="text-3xl font-bold mb-4">Welcome to Open Recipe Sharing</h1>
+//     <p className="text-lg">Discover, share, and enjoy delicious recipes from around the world!</p>
+//   </div>
+// );     // Lines 10 to 15 are not needed as import statement (line 7) has done it already
 
 // const RecipeList = () => (
 //   <div className="max-w-4xl mx-auto">
