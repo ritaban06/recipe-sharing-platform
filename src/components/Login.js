@@ -48,7 +48,7 @@ const Login = () => {
             className="shadow appearance-none border border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="username"
             type="text"
-            placeholder="Username"
+            placeholder=""
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -62,7 +62,7 @@ const Login = () => {
             className="shadow appearance-none border border-black rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
             type="password"
-            placeholder="******************"
+            placeholder=""
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
