@@ -16,7 +16,7 @@ const Home = () => (
 //     <h2 className="text-2xl font-bold mb-4">Recipe List</h2>
 //     {/* Add recipe list items here */}
 //   </div>
-// );
+// );         // Lines 14 to 19 not needed as import statement (line 4) has done it already
 
 const RecipeSubmission = () => (
   <div className="max-w-4xl mx-auto">
