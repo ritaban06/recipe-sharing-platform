@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import RecipeList from './components/RecipeList'; // Added import statement for RecipeList.js
+import RecipeSubmission from './components/RecipeSubmission'; // Added import statement for RecipeSubmission.js
 
 // Placeholder components
 const Home = () => (
