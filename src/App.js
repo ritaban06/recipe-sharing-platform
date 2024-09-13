@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import RecipeList from './components/RecipeList'; // Added import statement for RecipeList.js
 import RecipeSubmission from './components/RecipeSubmission'; // Added import statement for RecipeSubmission.js
+import Search from './components/Search';  // Added import statement for Search.js
 
 // Placeholder components
 const Home = () => (
@@ -26,12 +27,12 @@ const Home = () => (
 //   </div>
 // );           // Lines 22 to 27 are not needed as import statement (line 5) has done it already
 
-const Search = () => (
-  <div className="max-w-4xl mx-auto">
-    <h2 className="text-2xl font-bold mb-4">Search Recipes</h2>
-    {/* Add search functionality here */}
-  </div>
-);
+// const Search = () => (
+//   <div className="max-w-4xl mx-auto">
+//     <h2 className="text-2xl font-bold mb-4">Search Recipes</h2>
+//     {/* Add search functionality here */}
+//   </div>
+// );          // Lines 29 to 34 are not needed as import statement (line 6) has done it already
 
 const App = () => {
   return (
