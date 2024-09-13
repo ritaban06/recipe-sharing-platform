@@ -19,12 +19,12 @@ const Home = () => (
 //   </div>
 // );         // Lines 14 to 19 not needed as import statement (line 4) has done it already
 
-const RecipeSubmission = () => (
-  <div className="max-w-4xl mx-auto">
-    <h2 className="text-2xl font-bold mb-4">Submit a Recipe</h2>
-    {/* Add recipe submission form here */}
-  </div>
-);
+// const RecipeSubmission = () => (
+//   <div className="max-w-4xl mx-auto">
+//     <h2 className="text-2xl font-bold mb-4">Submit a Recipe</h2>
+//     {/* Add recipe submission form here */}
+//   </div>
+// );           // Lines 22 to 27 are not needed as import statement (line 5) has done it already
 
 const Search = () => (
   <div className="max-w-4xl mx-auto">
