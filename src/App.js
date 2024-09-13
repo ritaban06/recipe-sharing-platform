@@ -7,6 +7,7 @@ import Search from './components/Search';
 import Home from './components/Home';
 import Signup from './components/Signup';
 import Login from './components/Login';
+import RecipeDetail from './components/RecipeDetail';
 
 const App = () => {
   return (
@@ -60,6 +61,7 @@ const App = () => {
             <Route path="/search" element={<Search />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/recipes/:id" element={<RecipeDetail />} />
           </Routes>
         </main>
 
