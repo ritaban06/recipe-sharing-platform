@@ -45,7 +45,7 @@ const Home = () => {
       <section className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Welcome to Recipe Share</h1>
         <p className="text-xl text-gray-600">
-          Discover, share, and enjoy delicious recipes from around the world!
+          Discover, share, and enjoy delicious recipes from around India!
         </p>
       </section>
 
