@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import RecipeList from './components/RecipeList'; // Added import statement for RecipeList.js
 
 // Placeholder components
 const Home = () => (
@@ -10,12 +11,12 @@ const Home = () => (
   </div>
 );
 
-const RecipeList = () => (
-  <div className="max-w-4xl mx-auto">
-    <h2 className="text-2xl font-bold mb-4">Recipe List</h2>
-    {/* Add recipe list items here */}
-  </div>
-);
+// const RecipeList = () => (
+//   <div className="max-w-4xl mx-auto">
+//     <h2 className="text-2xl font-bold mb-4">Recipe List</h2>
+//     {/* Add recipe list items here */}
+//   </div>
+// );
 
 const RecipeSubmission = () => (
   <div className="max-w-4xl mx-auto">
