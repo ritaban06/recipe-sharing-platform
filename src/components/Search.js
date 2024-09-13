@@ -15,6 +15,7 @@ const Search = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -22,6 +23,7 @@ const Search = () => {
 
     setIsLoading(true);
     setError(null);
+    setHasSearched(true);
 
     try {
       // Replace with your actual API endpoint
@@ -66,7 +68,7 @@ const Search = () => {
       
       {error && <p className="text-center text-red-500">{error}</p>}
 
-      {searchResults.length > 0 ? (
+      {hasSearched && searchResults.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {searchResults.map((recipe) => (
             <RecipeCard
@@ -77,8 +79,10 @@ const Search = () => {
             />
           ))}
         </div>
-      ) : (
-        !isLoading && <p className="text-center">No results found. Try a different search term.</p>
+      )}
+
+      {hasSearched && searchResults.length === 0 && !isLoading && (
+        <p className="text-center">No results found. Try a different search term.</p>
       )}
     </div>
   );
