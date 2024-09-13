@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 const RecipeCard = ({ title, description, imageUrl }) => (
-  <div className="bg-white rounded-lg shadow-md overflow-hidden">
+  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
     <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
     <div className="p-4">
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+      <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">{title}</h3>
+      <p className="text-gray-600 dark:text-gray-400">{description}</p>
     </div>
   </div>
 );
@@ -26,7 +26,6 @@ const Search = () => {
     setHasSearched(true);
 
     try {
-      // Replace with your actual API endpoint
       const response = await fetch(`https://api.example.com/recipes/search?q=${encodeURIComponent(searchTerm)}`);
       
       if (!response.ok) {
@@ -44,8 +43,8 @@ const Search = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-4">
-      <h2 className="text-2xl font-bold mb-4">Search Recipes</h2>
+    <div className="max-w-4xl mx-auto mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Search Recipes</h2>
       <form onSubmit={handleSearch} className="mb-8">
         <div className="flex">
           <input
@@ -53,18 +52,18 @@ const Search = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Enter keywords..."
-            className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-r-md hover:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Search
           </button>
         </div>
       </form>
 
-      {isLoading && <p className="text-center">Searching...</p>}
+      {isLoading && <p className="text-center text-gray-600 dark:text-gray-300">Searching...</p>}
       
       {error && <p className="text-center text-red-500">{error}</p>}
 
@@ -82,7 +81,7 @@ const Search = () => {
       )}
 
       {hasSearched && searchResults.length === 0 && !isLoading && (
-        <p className="text-center">No results found. Try a different search term.</p>
+        <p className="text-center text-gray-600 dark:text-gray-300">No results found. Try a different search term.</p>
       )}
     </div>
   );
