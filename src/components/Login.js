@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
 
-const Login = () => {
+const Login = ({ setIsAuth }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -26,13 +28,25 @@ const Login = () => {
 
       const data = await response.json();
       console.log('Login successful:', data);
-      // Store the token in localStorage
       localStorage.setItem('token', data.token);
-      navigate('/'); // Redirect to home page after successful login
+      localStorage.setItem('isAuth', true);
+      setIsAuth(true);
+      navigate('/');
     } catch (err) {
       setError('Invalid username or password. Please try again.');
       console.error('Login error:', err);
     }
+  };
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider).then((result) => {
+      localStorage.setItem("isAuth", true);
+      setIsAuth(true);
+      navigate("/");
+    }).catch((error) => {
+      setError('Google sign-in failed. Please try again.');
+      console.error('Google sign-in error:', error);
+    });
   };
 
   return (
@@ -68,12 +82,19 @@ const Login = () => {
             required
           />
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-center justify-between">
           <button
-            className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full mb-4"
             type="submit"
           >
             Log In
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            type="button"
+            onClick={signInWithGoogle}
+          >
+            Sign in with Google
           </button>
         </div>
       </form>
