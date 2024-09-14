@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase'; // Assuming you've exported 'db' from your firebase.js file
 
 const RecipeList = () => {
   const [recipes, setRecipes] = useState([]);
@@ -9,12 +11,13 @@ const RecipeList = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await fetch('https://api.example.com/recipes');
-        if (!response.ok) {
-          throw new Error('Failed to fetch recipes');
-        }
-        const data = await response.json();
-        setRecipes(data);
+        const recipesCollection = collection(db, 'recipes');
+        const recipesSnapshot = await getDocs(recipesCollection);
+        const recipesList = recipesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setRecipes(recipesList);
       } catch (err) {
         setError('Failed to load recipes. Please try again later.');
         console.error('Error fetching recipes:', err);
