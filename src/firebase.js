@@ -5,12 +5,12 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCyoB8v7DiEyWfgUUST8WdhFi7OtPD9ScE",
-  authDomain: "recipe-41277.firebaseapp.com",
-  projectId: "recipe-41277",
-  storageBucket: "recipe-41277.appspot.com",
-  messagingSenderId: "565878877397",
-  appId: "1:565878877397:web:9962f03b2aced6726fc65c"
+  apiKey: "AIzaSyAN2mXRvXiFMe_i8_vsv1UCp9HL8UZKEzU",
+  authDomain: "cook-book-b9e75.firebaseapp.com",
+  projectId: "cook-book-b9e75",
+  storageBucket: "cook-book-b9e75.appspot.com",
+  messagingSenderId: "43389357181",
+  appId: "1:43389357181:web:94b9aae5f47175574d3514"
 };
 
 // Initialize Firebase
