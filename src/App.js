@@ -7,7 +7,7 @@ import RecipeList from './components/RecipeList';
 import RecipeSubmission from './components/RecipeSubmission';
 import Search from './components/Search';
 import Home from './components/Home';
-import Signup from './components/Signup';
+// import Signup from './components/Signup';
 import Login from './components/Login';
 import RecipeDetail from './components/RecipeDetail';
 import { signOut } from "firebase/auth";
@@ -88,9 +88,9 @@ const App = () => {
                   </Link>
                   {!isAuth ? (
                     <>
-                      <Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded mr-2">
+                      {/*<Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded mr-2">
                         Sign Up
-                      </Link>
+                      </Link> */}
                       <Link to="/login" className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded">
                         Log In
                       </Link>
@@ -128,9 +128,9 @@ const App = () => {
                 </Link>
                 {!isAuth ? (
                   <>
-                    <Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded block mx-3 my-2">
+                    {/* <Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded block mx-3 my-2">
                       Sign Up
-                    </Link>
+                    </Link> */}
                     <Link to="/login" className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded block mx-3 my-2">
                       Log In
                     </Link>
@@ -151,7 +151,7 @@ const App = () => {
               <Route path="/recipes" element={<RecipeList />} />
               <Route path="/submit" element={<RecipeSubmission isAuth={isAuth} />} />
               <Route path="/search" element={<Search />} />
-              <Route path="/signup" element={<Signup />} />
+              {/*<Route path="/signup" element={<Signup />} /> */}
               <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
               <Route path="/recipes/:id" element={<RecipeDetail />} />
             </Routes>
