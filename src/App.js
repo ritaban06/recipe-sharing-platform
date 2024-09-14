@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon, XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -10,12 +10,30 @@ import Home from './components/Home';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import RecipeDetail from './components/RecipeDetail';
+import { signOut } from "firebase/auth";
+import { auth } from "./firebase";
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
+
+  useEffect(() => {
+    const storedAuth = localStorage.getItem("isAuth");
+    if (storedAuth) {
+      setIsAuth(JSON.parse(storedAuth));
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const signUserOut = () => {
+    signOut(auth).then(() => {
+      localStorage.clear();
+      setIsAuth(false);
+      window.location.pathname = "/login";
+    });
   };
 
   return (
@@ -58,20 +76,30 @@ const App = () => {
                     <BookOpenIcon className="h-5 w-5 mr-1" />
                     Recipes
                   </Link>
-                  <Link to="/submit" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white inline-flex items-center px-1 pt-1 text-sm font-medium">
-                    <PlusCircleIcon className="h-5 w-5 mr-1" />
-                    Submit Recipe
-                  </Link>
+                  {isAuth && (
+                    <Link to="/submit" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white inline-flex items-center px-1 pt-1 text-sm font-medium">
+                      <PlusCircleIcon className="h-5 w-5 mr-1" />
+                      Submit Recipe
+                    </Link>
+                  )}
                   <Link to="/search" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white inline-flex items-center px-1 pt-1 text-sm font-medium">
                     <MagnifyingGlassIcon className="h-5 w-5 mr-1" />
                     Search
                   </Link>
-                  <Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded mr-2">
-                    Sign Up
-                  </Link>
-                  <Link to="/login" className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded">
-                    Log In
-                  </Link>
+                  {!isAuth ? (
+                    <>
+                      <Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded mr-2">
+                        Sign Up
+                      </Link>
+                      <Link to="/login" className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded">
+                        Log In
+                      </Link>
+                    </>
+                  ) : (
+                    <button onClick={signUserOut} className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded">
+                      Log Out
+                    </button>
+                  )}
                   <ThemeToggle />
                 </div>
               </div>
@@ -88,20 +116,30 @@ const App = () => {
                   <BookOpenIcon className="h-5 w-5 inline mr-1" />
                   Recipes
                 </Link>
-                <Link to="/submit" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white block px-3 py-2 text-base font-medium">
-                  <PlusCircleIcon className="h-5 w-5 inline mr-1" />
-                  Submit Recipe
-                </Link>
+                {isAuth && (
+                  <Link to="/submit" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white block px-3 py-2 text-base font-medium">
+                    <PlusCircleIcon className="h-5 w-5 inline mr-1" />
+                    Submit Recipe
+                  </Link>
+                )}
                 <Link to="/search" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white block px-3 py-2 text-base font-medium">
                   <MagnifyingGlassIcon className="h-5 w-5 inline mr-1" />
                   Search
                 </Link>
-                <Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded block mx-3 my-2">
-                  Sign Up
-                </Link>
-                <Link to="/login" className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded block mx-3 my-2">
-                  Log In
-                </Link>
+                {!isAuth ? (
+                  <>
+                    <Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded block mx-3 my-2">
+                      Sign Up
+                    </Link>
+                    <Link to="/login" className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded block mx-3 my-2">
+                      Log In
+                    </Link>
+                  </>
+                ) : (
+                  <button onClick={signUserOut} className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded block mx-3 my-2">
+                    Log Out
+                  </button>
+                )}
               </div>
             </div>
           </nav>
@@ -109,12 +147,12 @@ const App = () => {
           {/* Main content area */}
           <main className="flex-1 py-10">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home isAuth={isAuth} />} />
               <Route path="/recipes" element={<RecipeList />} />
-              <Route path="/submit" element={<RecipeSubmission />} />
+              <Route path="/submit" element={<RecipeSubmission isAuth={isAuth} />} />
               <Route path="/search" element={<Search />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
               <Route path="/recipes/:id" element={<RecipeDetail />} />
             </Routes>
           </main>
