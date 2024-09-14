@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth, provider } from "../firebase";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
-const Signup = () => {
+const Signup = ({ setIsAuth }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,27 +15,31 @@ const Signup = () => {
     setError('');
 
     try {
-      const response = await fetch('YOUR_API_ENDPOINT/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, username, password }),
-      });
+      // Firebase email/password signup
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      if (!response.ok) {
-        throw new Error('Signup failed');
-      }
+      // If you need to store additional user data (like username), you can use Firebase Realtime Database or Firestore here
 
-      const data = await response.json();
-      console.log('Signup successful:', data);
-      // Optionally store the token in localStorage
-      // localStorage.setItem('token', data.token);
-      navigate('/'); // Redirect to home page after successful signup
+      console.log('Signup successful:', user);
+      localStorage.setItem("isAuth", true);
+      setIsAuth(true);
+      navigate('/');
     } catch (err) {
-      setError('Signup failed. Please try again.');
+      setError('Signup failed. ' + err.message);
       console.error('Signup error:', err);
     }
+  };
+
+  const signUpWithGoogle = () => {
+    signInWithPopup(auth, provider).then((result) => {
+      localStorage.setItem("isAuth", true);
+      setIsAuth(true);
+      navigate("/");
+    }).catch((error) => {
+      setError('Google sign-up failed. ' + error.message);
+      console.error('Google sign-up error:', error);
+    });
   };
 
   return (
@@ -83,12 +89,19 @@ const Signup = () => {
             required
           />
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-center justify-between">
           <button
-            className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full mb-4"
             type="submit"
           >
             Sign Up
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            type="button"
+            onClick={signUpWithGoogle}
+          >
+            Sign up with Google
           </button>
         </div>
       </form>
