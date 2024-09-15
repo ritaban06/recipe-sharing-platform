@@ -60,13 +60,100 @@ const RecipeSubmission = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      setIsSubmitting(true);
+      try {
+        // Initialize Firebase (you may want to move this to a more appropriate place)
+        const firebaseConfig = {
+          // Your Firebase configuration here
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Create a new recipe entry in Firebase
+        const recipeRef = ref(db, 'recipes');
+        await push(recipeRef, {
+          title: recipe.title,
+          ingredients: recipe.ingredients,
+          instructions: recipe.instructions,
+          // Note: Handling file upload would require additional steps
+          // You might want to use Firebase Storage for image uploads
+        });
+
+        // Reset form after successful submission
+        setRecipe({
+          title: '',
+          ingredients: '',
+          instructions: '',
+          image: null
+        });
+        alert('Recipe submitted successfully!');
+      } catch (error) {
+        console.error('Error submitting recipe:', error);
+        alert('An error occurred while submitting the recipe. Please try again.');
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Submit a New Recipe</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Form fields remain the same */}
+        <div>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Recipe Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={recipe.title}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+          {errors.title && <p className="mt-2 text-sm text-red-600">{errors.title}</p>}
+        </div>
+        <div>
+          <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Ingredients</label>
+          <textarea
+            id="ingredients"
+            name="ingredients"
+            rows="3"
+            value={recipe.ingredients}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          ></textarea>
+          {errors.ingredients && <p className="mt-2 text-sm text-red-600">{errors.ingredients}</p>}
+        </div>
+        <div>
+          <label htmlFor="instructions" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Instructions</label>
+          <textarea
+            id="instructions"
+            name="instructions"
+            rows="5"
+            value={recipe.instructions}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          ></textarea>
+          {errors.instructions && <p className="mt-2 text-sm text-red-600">{errors.instructions}</p>}
+        </div>
+        <div>
+          <label htmlFor="image" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Recipe Image</label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            onChange={handleImageChange}
+            className="mt-1 block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-md file:border-0
+              file:text-sm file:font-semibold
+              file:bg-indigo-50 file:text-indigo-700
+              hover:file:bg-indigo-100"
+          />
+        </div>
         <div>
           <button
             type="submit"
