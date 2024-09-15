@@ -1,47 +1,63 @@
+// Import necessary dependencies from React and React Router
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// Import Firebase authentication functions and configuration
 import { auth, provider } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
+// Define the Signup component, accepting setIsAuth as a prop
 const Signup = ({ setIsAuth }) => {
+  // State hooks for form fields and error handling
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
+  // Hook for programmatic navigation
   const navigate = useNavigate();
 
+  // Handler for form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+    e.preventDefault(); // Prevent default form submission behavior
+    setError(''); // Clear any existing errors
 
     try {
-      // Firebase email/password signup
+      // Attempt to create a new user with Firebase
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // If you need to store additional user data (like username), you can use Firebase Realtime Database or Firestore here
-
+      // Log successful signup
       console.log('Signup successful:', user);
+      
+      // Set authentication state
       localStorage.setItem("isAuth", true);
       setIsAuth(true);
+      
+      // Redirect to home page
       navigate('/');
     } catch (err) {
+      // Handle signup errors
       setError('Signup failed. ' + err.message);
       console.error('Signup error:', err);
     }
   };
 
+  // Handler for Google sign-up
   const signUpWithGoogle = () => {
     signInWithPopup(auth, provider).then((result) => {
+      // Set authentication state on successful Google sign-up
       localStorage.setItem("isAuth", true);
       setIsAuth(true);
       navigate("/");
     }).catch((error) => {
+      // Handle Google sign-up errors
       setError('Google sign-up failed. ' + error.message);
       console.error('Google sign-up error:', error);
     });
   };
 
+  // Render the signup form
   return (
     <div className="max-w-md mx-auto mt-10 px-4">
       <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -109,4 +125,5 @@ const Signup = ({ setIsAuth }) => {
   );
 };
 
+// Export the Signup component
 export default Signup;
