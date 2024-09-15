@@ -8,6 +8,7 @@ import RecipeSubmission from './components/RecipeSubmission';
 import Search from './components/Search';
 import Home from './components/Home';
 import Login from './components/Login';
+import CategoryMeals from './components/CategoryMeals';
 import RecipeDetail from './components/RecipeDetail';
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase";
@@ -126,7 +127,8 @@ const App = () => {
               <Route path="/submit" element={<RecipeSubmission isAuth={isAuth} />} />
               <Route path="/search" element={<Search />} />
               <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
-              <Route path="/recipes/:id" element={<RecipeDetail />} />
+              <Route path="/category/:categoryName" element={<CategoryMeals />} />
+              <Route path="/meal/:id" element={<RecipeDetail />} />
             </Routes>
           </main>
 
