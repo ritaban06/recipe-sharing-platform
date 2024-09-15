@@ -60,38 +60,7 @@ const RecipeSubmission = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      setIsSubmitting(true);
-      try {
-        const formData = new FormData();
-        formData.append('title', recipe.title);
-        formData.append('ingredients', recipe.ingredients);
-        formData.append('instructions', recipe.instructions);
-        if (recipe.image) {
-          formData.append('image', recipe.image);
-        }
-
-        const response = await fetch('/api/submit-recipe', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to submit recipe');
-        }
-
-        setRecipe({ title: '', ingredients: '', instructions: '', image: null });
-        alert('Recipe submitted successfully!');
-      } catch (error) {
-        console.error('Error submitting recipe:', error);
-        alert('Failed to submit recipe. Please try again.');
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-  };
+  
 
   return (
     <div className="max-w-2xl mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
