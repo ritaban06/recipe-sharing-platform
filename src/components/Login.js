@@ -1,19 +1,28 @@
+// Import necessary dependencies from React and React Router
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// Import Firebase authentication functions and configuration
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 
+// Define the Login component, accepting setIsAuth as a prop
 const Login = ({ setIsAuth }) => {
+  // State hooks for form fields and error handling
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
+  // Hook for programmatic navigation
   const navigate = useNavigate();
 
+  // Handler for form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+    e.preventDefault(); // Prevent default form submission behavior
+    setError(''); // Clear any existing errors
 
     try {
+      // Attempt to login user through custom API
       const response = await fetch('YOUR_API_ENDPOINT/login', {
         method: 'POST',
         headers: {
@@ -26,29 +35,39 @@ const Login = ({ setIsAuth }) => {
         throw new Error('Login failed');
       }
 
+      // Parse the response
       const data = await response.json();
       console.log('Login successful:', data);
+      
+      // Store authentication token and set auth state
       localStorage.setItem('token', data.token);
       localStorage.setItem('isAuth', true);
       setIsAuth(true);
+      
+      // Redirect to home page
       navigate('/');
     } catch (err) {
+      // Handle login errors
       setError('Invalid username or password. Please try again.');
       console.error('Login error:', err);
     }
   };
 
+  // Handler for Google sign-in
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider).then((result) => {
+      // Set authentication state on successful Google sign-in
       localStorage.setItem("isAuth", true);
       setIsAuth(true);
       navigate("/");
     }).catch((error) => {
+      // Handle Google sign-in errors
       setError('Google sign-in failed. Please try again.');
       console.error('Google sign-in error:', error);
     });
   };
 
+  // Render the login form
   return (
     <div className="max-w-md mx-auto mt-10 px-4">
       <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -102,4 +121,5 @@ const Login = ({ setIsAuth }) => {
   );
 };
 
+// Export the Login component
 export default Login;
