@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Link, useNavigate } from 'react-router-dom';
-import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon, XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import { HomeIcon, PlusCircleIcon, MagnifyingGlassIcon, XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import { ThemeProvider } from './contexts/ThemeContext';
-// import ThemeToggle from './components/ThemeToggle';    dark mode
 import RecipeList from './components/RecipeList';
 import RecipeSubmission from './components/RecipeSubmission';
 import Search from './components/Search';
@@ -12,6 +11,7 @@ import CategoryMeals from './components/CategoryMeals';
 import RecipeDetail from './components/RecipeDetail';
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase";
+import myIcon from './assets/my-icon.png'; // Import your custom icon image
 
 const NavBar = ({ isAuth, setIsAuth }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,13 +33,13 @@ const NavBar = ({ isAuth, setIsAuth }) => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <BookOpenIcon className="h-8 w-8 text-blue-500 dark:text-blue-400" />
+              {/* Use the custom icon */}
+              <img src={myIcon} alt="Custom Icon" className="h-8 w-8" />
               <span className="text-xl font-semibold ml-2 text-gray-900 dark:text-white">Recipe Share</span>
             </Link>
           </div>
-          
+
           <div className="flex items-center sm:hidden">
-            {/* <ThemeToggle />     dark mode      */}
             <button
               onClick={toggleMenu}
               className="ml-2 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
@@ -55,7 +55,7 @@ const NavBar = ({ isAuth, setIsAuth }) => {
 
           <div className="hidden sm:flex sm:items-center sm:ml-6 sm:space-x-8">
             <NavLink to="/" icon={<HomeIcon className="h-5 w-5 mr-1" />} text="Home" />
-            <NavLink to="/recipes" icon={<BookOpenIcon className="h-5 w-5 mr-1" />} text="Recipes" />
+            <NavLink to="/recipes" icon={<PlusCircleIcon className="h-5 w-5 mr-1" />} text="Recipes" />
             {isAuth && <NavLink to="/submit" icon={<PlusCircleIcon className="h-5 w-5 mr-1" />} text="Submit Recipe" />}
             <NavLink to="/search" icon={<MagnifyingGlassIcon className="h-5 w-5 mr-1" />} text="Search" />
             {!isAuth ? (
@@ -67,7 +67,6 @@ const NavBar = ({ isAuth, setIsAuth }) => {
                 Log Out
               </button>
             )}
-            {/* <ThemeToggle />      dark mode   */} 
           </div>
         </div>
       </div>
@@ -75,7 +74,7 @@ const NavBar = ({ isAuth, setIsAuth }) => {
       <div className={`sm:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="pt-2 pb-3 space-y-1">
           <MobileNavLink to="/" icon={<HomeIcon className="h-5 w-5 inline mr-1" />} text="Home" />
-          <MobileNavLink to="/recipes" icon={<BookOpenIcon className="h-5 w-5 inline mr-1" />} text="Recipes" />
+          <MobileNavLink to="/recipes" icon={<PlusCircleIcon className="h-5 w-5 inline mr-1" />} text="Recipes" />
           {isAuth && <MobileNavLink to="/submit" icon={<PlusCircleIcon className="h-5 w-5 inline mr-1" />} text="Submit Recipe" />}
           <MobileNavLink to="/search" icon={<MagnifyingGlassIcon className="h-5 w-5 inline mr-1" />} text="Search" />
           {!isAuth ? (
