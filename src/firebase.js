@@ -23,3 +23,4 @@ const analytics = getAnalytics(app);
 const provider = new GoogleAuthProvider();
 
 export { db, auth, provider, analytics };
+
