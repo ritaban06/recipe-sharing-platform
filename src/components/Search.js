@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-const RecipeCard = ({ title, description, imageUrl }) => (
+const RecipeCard = ({ title, category, imageUrl }) => (
   <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
     <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
     <div className="p-4">
       <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400">{description}</p>
+      <p className="text-gray-600 dark:text-gray-400">Category: {category}</p>
     </div>
   </div>
 );
@@ -26,14 +26,14 @@ const Search = () => {
     setHasSearched(true);
 
     try {
-      const response = await fetch(`https://api.example.com/recipes/search?q=${encodeURIComponent(searchTerm)}`);
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchTerm)}`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch search results');
       }
 
       const data = await response.json();
-      setSearchResults(data);
+      setSearchResults(data.meals || []);
     } catch (err) {
       setError('An error occurred while searching. Please try again.');
       console.error('Search error:', err);
@@ -51,7 +51,7 @@ const Search = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Enter keywords..."
+            placeholder="Enter a meal name..."
             className="flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100"
           />
           <button
@@ -69,12 +69,12 @@ const Search = () => {
 
       {hasSearched && searchResults.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {searchResults.map((recipe) => (
+          {searchResults.map((meal) => (
             <RecipeCard
-              key={recipe.id}
-              title={recipe.title}
-              description={recipe.description}
-              imageUrl={recipe.imageUrl}
+              key={meal.idMeal}
+              title={meal.strMeal}
+              category={meal.strCategory}
+              imageUrl={meal.strMealThumb}
             />
           ))}
         </div>
