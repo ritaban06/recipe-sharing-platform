@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, push } from 'firebase/database';
+import { db, auth } from '../firebase'; // Adjust this import path as needed
+import { ref, push, set } from 'firebase/database';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+
+const storage = getStorage();
 
 const RecipeSubmission = () => {
   const [recipe, setRecipe] = useState({
@@ -14,20 +17,13 @@ const RecipeSubmission = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Initialize Firebase
-    const firebaseConfig = {
-      // Your Firebase configuration here
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // Fetch API data
     const fetchAPIData = async () => {
       try {
         const response = await axios.get('https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata');
         const apiData = response.data;
         const dbRef = ref(db, 'api-data');
         await push(dbRef, apiData);
+        console.log('API data fetched and saved successfully');
       } catch (error) {
         console.error('Error fetching or saving API data:', error);
       }
@@ -65,24 +61,23 @@ const RecipeSubmission = () => {
     if (validateForm()) {
       setIsSubmitting(true);
       try {
-        // Initialize Firebase (you may want to move this to a more appropriate place)
-        const firebaseConfig = {
-          // Your Firebase configuration here
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        let imageUrl = null;
+        if (recipe.image) {
+          const imageRef = storageRef(storage, `recipe-images/${Date.now()}_${recipe.image.name}`);
+          const snapshot = await uploadBytes(imageRef, recipe.image);
+          imageUrl = await getDownloadURL(snapshot.ref);
+        }
 
-        // Create a new recipe entry in Firebase
         const recipeRef = ref(db, 'recipes');
-        await push(recipeRef, {
+        const newRecipeRef = push(recipeRef);
+        await set(newRecipeRef, {
           title: recipe.title,
           ingredients: recipe.ingredients,
           instructions: recipe.instructions,
-          // Note: Handling file upload would require additional steps
-          // You might want to use Firebase Storage for image uploads
+          imageUrl: imageUrl,
+          userId: auth.currentUser ? auth.currentUser.uid : null
         });
 
-        // Reset form after successful submission
         setRecipe({
           title: '',
           ingredients: '',
@@ -103,6 +98,7 @@ const RecipeSubmission = () => {
     <div className="max-w-2xl mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Submit a New Recipe</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Form fields remain the same */}
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Recipe Title</label>
           <input
