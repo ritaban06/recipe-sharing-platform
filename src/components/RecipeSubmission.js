@@ -1,10 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { db, auth } from '../firebase'; // Adjust this import path as needed
-import { ref, push, set } from 'firebase/database';
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const storage = getStorage();
+const firebaseConfig = {
+  apiKey: "AIzaSyAN2mXRvXiFMe_i8_vsv1UCp9HL8UZKEzU",
+  authDomain: "cook-book-b9e75.firebaseapp.com",
+  projectId: "cook-book-b9e75",
+  storageBucket: "cook-book-b9e75.appspot.com",
+  messagingSenderId: "43389357181",
+  appId: "1:43389357181:web:94b9aae5f47175574d3514",
+  measurementId: "G-Y52X75CEE4"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize services
+const db = getFirestore(app);
+const auth = getAuth(app);
+const analytics = getAnalytics(app);
+const provider = new GoogleAuthProvider();
+const storage = getStorage(app);
 
 // Custom hook for API and database operations
 const useAPIDBOperations = () => {
@@ -13,8 +33,7 @@ const useAPIDBOperations = () => {
       try {
         const response = await axios.get('https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata');
         const apiData = response.data;
-        const dbRef = ref(db, 'api-data');
-        await push(dbRef, apiData);
+        await addDoc(collection(db, 'api-data'), apiData);
         console.log('API data fetched and saved successfully');
       } catch (error) {
         console.error('Error fetching or saving API data:', error);
@@ -25,9 +44,30 @@ const useAPIDBOperations = () => {
   }, []);
 
   const saveRecipe = async (recipeData) => {
-    const recipeRef = ref(db, 'recipes');
-    const newRecipeRef = push(recipeRef);
-    await set(newRecipeRef, recipeData);
+    try {
+      console.log('Attempting to save recipe:', recipeData);
+
+      if (!auth.currentUser) {
+        throw new Error('User not authenticated');
+      }
+
+      if (!recipeData.title || !recipeData.ingredients || !recipeData.instructions) {
+        throw new Error('Missing required fields');
+      }
+
+      const dataToSave = {
+        ...recipeData,
+        createdAt: new Date(),
+        userId: auth.currentUser.uid
+      };
+
+      const docRef = await addDoc(collection(db, 'recipes'), dataToSave);
+      console.log('Document written with ID: ', docRef.id);
+      return docRef.id;
+    } catch (error) {
+      console.error('Error saving recipe:', error);
+      throw error;
+    }
   };
 
   return { saveRecipe };
@@ -80,12 +120,11 @@ const RecipeSubmission = () => {
           imageUrl = await getDownloadURL(snapshot.ref);
         }
 
-        await saveRecipe({
+        const recipeId = await saveRecipe({
           title: recipe.title,
           ingredients: recipe.ingredients,
           instructions: recipe.instructions,
           imageUrl: imageUrl,
-          userId: auth.currentUser ? auth.currentUser.uid : null
         });
 
         setRecipe({
@@ -94,10 +133,18 @@ const RecipeSubmission = () => {
           instructions: '',
           image: null
         });
-        alert('Recipe submitted successfully!');
+        alert(`Recipe submitted successfully! Recipe ID: ${recipeId}`);
       } catch (error) {
         console.error('Error submitting recipe:', error);
-        alert('An error occurred while submitting the recipe. Please try again.');
+        let errorMessage = 'An error occurred while submitting the recipe.';
+        if (error.message === 'User not authenticated') {
+          errorMessage = 'Please sign in to submit a recipe.';
+        } else if (error.message === 'Missing required fields') {
+          errorMessage = 'Please fill in all required fields.';
+        } else if (error.code === 'permission-denied') {
+          errorMessage = 'You do not have permission to submit recipes.';
+        }
+        alert(errorMessage + ' Please try again.');
       } finally {
         setIsSubmitting(false);
       }
