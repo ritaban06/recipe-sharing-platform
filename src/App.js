@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon, XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import { ThemeProvider } from './contexts/ThemeContext';
-import ThemeToggle from './components/ThemeToggle';
+import ThemeToggle from './components/ThemeToggle';  // dark mode
 import RecipeList from './components/RecipeList';
 import RecipeSubmission from './components/RecipeSubmission';
 import Search from './components/Search';
@@ -39,7 +39,7 @@ const NavBar = ({ isAuth, setIsAuth }) => {
           </div>
           
           <div className="flex items-center sm:hidden">
-            <ThemeToggle />
+            <ThemeToggle /> {/* dark mode */}
             <button
               onClick={toggleMenu}
               className="ml-2 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
@@ -67,7 +67,7 @@ const NavBar = ({ isAuth, setIsAuth }) => {
                 Log Out
               </button>
             )}
-            <ThemeToggle />
+            <ThemeToggle />   {/*dark mode   */}
           </div>
         </div>
       </div>
