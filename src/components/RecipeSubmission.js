@@ -6,16 +6,8 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'fire
 
 const storage = getStorage();
 
-const RecipeSubmission = () => {
-  const [recipe, setRecipe] = useState({
-    title: '',
-    ingredients: '',
-    instructions: '',
-    image: null
-  });
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+// Custom hook for API and database operations
+const useAPIDBOperations = () => {
   useEffect(() => {
     const fetchAPIData = async () => {
       try {
@@ -31,6 +23,26 @@ const RecipeSubmission = () => {
 
     fetchAPIData();
   }, []);
+
+  const saveRecipe = async (recipeData) => {
+    const recipeRef = ref(db, 'recipes');
+    const newRecipeRef = push(recipeRef);
+    await set(newRecipeRef, recipeData);
+  };
+
+  return { saveRecipe };
+};
+
+const RecipeSubmission = () => {
+  const [recipe, setRecipe] = useState({
+    title: '',
+    ingredients: '',
+    instructions: '',
+    image: null
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { saveRecipe } = useAPIDBOperations();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,9 +80,7 @@ const RecipeSubmission = () => {
           imageUrl = await getDownloadURL(snapshot.ref);
         }
 
-        const recipeRef = ref(db, 'recipes');
-        const newRecipeRef = push(recipeRef);
-        await set(newRecipeRef, {
+        await saveRecipe({
           title: recipe.title,
           ingredients: recipe.ingredients,
           instructions: recipe.instructions,
@@ -98,7 +108,6 @@ const RecipeSubmission = () => {
     <div className="max-w-2xl mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Submit a New Recipe</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Form fields remain the same */}
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Recipe Title</label>
           <input
