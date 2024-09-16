@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Link, useNavigate, Navigate } from 'react-router-dom';
 import { HomeIcon, BookOpenIcon, PlusCircleIcon, MagnifyingGlassIcon, XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ThemeToggle from './components/ThemeToggle';  // dark mode
@@ -107,6 +107,14 @@ const MobileNavLink = ({ to, icon, text }) => (
   </Link>
 );
 
+// New Protected Route component
+const ProtectedRoute = ({ isAuth, children }) => {
+  if (!isAuth) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
 const App = () => {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth") === "true");
 
@@ -124,7 +132,14 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home isAuth={isAuth} />} />
               <Route path="/recipes" element={<RecipeList />} />
-              <Route path="/submit" element={<RecipeSubmission isAuth={isAuth} />} />
+              <Route 
+                path="/submit" 
+                element={
+                  <ProtectedRoute isAuth={isAuth}>
+                    <RecipeSubmission isAuth={isAuth} />
+                  </ProtectedRoute>
+                } 
+              />
               <Route path="/search" element={<Search />} />
               <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
               <Route path="/category/:categoryName" element={<CategoryMeals />} />
