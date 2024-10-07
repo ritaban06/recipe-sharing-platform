@@ -1,3 +1,5 @@
+![GitHub repo size](https://img.shields.io/github/repo-size/ritaban06/recipe-sharing-platform)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
